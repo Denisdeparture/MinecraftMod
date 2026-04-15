@@ -1,5 +1,5 @@
 package com.example.examplemod;
-
+import com.simibubi.create.content.kinetics.motor.CreativeMotorBlock; // Оно существует
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
@@ -27,7 +27,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
-
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(ExampleMod.MOD_ID)
 public class ExampleMod
