@@ -39,3 +39,9 @@ showAsResourcePack=false
   versionRange="[6.0.8,6.1.0)"
   ordering="NONE"
   side="BOTH"
+[[dependencies.examplemod]]
+  modId="geckolib"
+  mandatory=true
+  versionRange="[4.4.7]"
+  ordering="NONE"
+  side="BOTH"
