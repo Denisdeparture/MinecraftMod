@@ -44,3 +44,11 @@ Community Documentation: https://docs.minecraftforge.net/en/1.20.1/gettingstarte
 LexManos' Install Video: https://youtu.be/8VEdtQLuLO0
 Forge Forums: https://forums.minecraftforge.net/
 Forge Discord: https://discord.minecraftforge.net/
+
+
+
+Что бы загрузить библиотеки в проект: 
+
+./gradlew build 
+
+
