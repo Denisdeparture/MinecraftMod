@@ -5,7 +5,11 @@ import com.ctfow.createthefactoryofwar.item.CustomClue;
 import com.tterrag.registrate.util.entry.ItemEntry;
 
 public class ModItems {
-    public static final ItemEntry<CustomClue> RADAR_GOGGLES = CreateOfWar.REGISTRATE
-            .item("ctfow_clue", CustomClue::new)
+    public static final ItemEntry<CustomClue> CUSTOM_GLUE = CreateOfWar.REGISTRATE
+            .item("custom_glue", CustomClue::new)
             .register();
+
+    public static void register() {
+        CreateOfWar.LOGGER.info("Registering Items!");
+    }
 }
