@@ -1,8 +1,8 @@
 plugins {
-    id 'java-library'
-    id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.141'
     id 'idea'
+    id 'maven-publish'
+    id "net.neoforged.moddev" version '1.0.21'
+    id 'com.gradleup.shadow' version '8.3.5'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -27,7 +27,65 @@ sourceSets.main.resources {
 }
 
 repositories {
-    // Add here additional repositories if required by some of the dependencies below.
+    gradlePluginPortal()
+    mavenCentral()
+    mavenLocal()
+    maven { url = "https://maven.createmod.net" } // Ponder, Flywheel
+    maven { url = "https://maven.blamejared.com" } // JEI, Vazkii's Mods
+    maven { url = "https://maven.squiddev.cc" } // CC: Tweaked
+    maven { url = "https://www.cursemaven.com" }
+    maven { url = "https://maven.ithundxr.dev/snapshots" }
+    maven { url = "https://api.modrinth.com/maven" }
+    maven { url = "https://maven.ftb.dev/releases" } // FTB Mods
+    maven { url = "https://maven.architectury.dev" } // Arch API
+    maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven" }
+    maven { url 'https://plugins.gradle.org/' }
+    maven { url 'https://maven.quiltmc.org/repository/release' }
+    maven { url 'https://maven.blamejared.com/' }
+      
+    maven {
+         url "https://maven.squiddev.cc"
+            content {
+              includeGroup("cc.tweaked")
+            }
+    }
+
+    maven {
+        url = "https://api.modrinth.com/maven"
+    }
+    maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+
+    maven { url = "https://maven.tterrag.com" } // Registrate
+    maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // ForgeConfigAPIPort
+
+    maven {
+        url 'https://api.modrinth.com/maven'
+        content { includeGroup 'maven.modrinth' }
+    }
+    maven {
+        url 'https://www.cursemaven.com'
+        content { includeGroup "curse.maven" }
+    }
+    maven { // Ritchie's Projectile Library && CBC
+        url = "https://maven.realrobotix.me/master/"
+        content {
+            includeGroup("com.rbasamoyai")
+        }
+    }
+
+    maven { url 'https://modmaven.dev/' }
+
+
+    maven {
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+
+    flatDir {
+        dirs 'lib'
+    }
 }
 
 base {
@@ -39,7 +97,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 neoForge {
     // Specify the version of NeoForge to use.
-    version = project.neo_version
+    version = neoforge_version
 
     parchment {
         mappingsVersion = project.parchment_mappings_version
@@ -118,37 +176,23 @@ configurations {
 }
 
 dependencies {
-    // Example optional mod dependency with JEI
-    // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
-    // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
-    // compileOnly "mezz.jei:jei-${mc_version}-neoforge-api:${jei_version}"
-    // We add the full version to localRuntime, not runtimeOnly, so that we do not publish a dependency on it
-    // localRuntime "mezz.jei:jei-${mc_version}-neoforge:${jei_version}"
+    implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+    implementation("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
+    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
+    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
+    implementation("com.tterrag.registrate:Registrate:${registrate_version}")
 
-    // Example mod dependency using a mod jar from ./libs with a flat dir repository
-    // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
-    // The group id is ignored when searching -- in this case, it is "blank"
-    // implementation "blank:coolmod-${mc_version}:${coolmod_version}"
-
-    // Example mod dependency using a file as dependency
-    // implementation files("libs/coolmod-${mc_version}-${coolmod_version}.jar")
-
-    // Example project dependency using a sister or child project:
-    // implementation project(":myproject")
-
-    // For more info:
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+    //JEI
+    implementation("mezz.jei:jei-$minecraft_version-neoforge:$jei_version")
 }
 
-// This block of code expands all declared replace properties in the specified resource targets.
-// A missing property will result in an error. Properties are expanded using ${} Groovy notation.
+
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
     var replaceProperties = [
             minecraft_version      : minecraft_version,
             minecraft_version_range: minecraft_version_range,
-            neo_version            : neo_version,
-            loader_version_range   : loader_version_range,
+            neo_version            : neoforge_version,
+            loader_version_range   : neoforge_loader_version_range,
             mod_id                 : mod_id,
             mod_name               : mod_name,
             mod_license            : mod_license,
